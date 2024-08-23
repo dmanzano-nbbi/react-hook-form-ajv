@@ -4,7 +4,6 @@ import Ajv from "ajv";
 import addErrors from "ajv-errors";
 import { ajvResolver } from "@hookform/resolvers/ajv";
 
-// AJV setup
 const ajv = new Ajv({ allErrors: true });
 addErrors(ajv);
 
@@ -42,7 +41,6 @@ const schema = {
   additionalProperties: false,
 };
 
-// Define interface
 interface IFormInput {
   firstName: string;
   lastName: string;
@@ -50,7 +48,6 @@ interface IFormInput {
 }
 
 export default function App() {
-  // Configure the resolver with AJV and schema
   const {
     register,
     handleSubmit,
@@ -65,17 +62,13 @@ export default function App() {
     <form onSubmit={handleSubmit(onSubmit)}>
       <label>First Name</label>
       <input {...register("firstName")} />
-      {errors.firstName && <p>{errors.firstName.message}</p>}{" "}
-      {/* Display AJV validation errors */}
+      {errors.firstName && <p>{errors.firstName.message}</p>}
       <label>Last Name</label>
       <input {...register("lastName")} />
-      {errors.lastName && <p>{errors.lastName.message}</p>}{" "}
-      {/* Display AJV validation errors */}
+      {errors.lastName && <p>{errors.lastName.message}</p>}
       <label>Age</label>
-      <input type="number" {...register("age")} />
-      {errors.age && <p>{errors.age.message}</p>}{" "}
-      {/* Display AJV validation errors */}
-      <input type="submit" />
+      <input type="number" {...register("age", { valueAsNumber: true })} />
+      {errors.age && <p>{errors.age.message}</p>} <input type="submit" />
     </form>
   );
 }
