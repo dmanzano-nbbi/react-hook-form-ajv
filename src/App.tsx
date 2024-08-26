@@ -1,13 +1,13 @@
 import React from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
-import Ajv from "ajv";
+import Ajv, { JSONSchemaType } from "ajv";
 import addErrors from "ajv-errors";
 import { ajvResolver } from "@hookform/resolvers/ajv";
 
 const ajv = new Ajv({ allErrors: true });
 addErrors(ajv);
 
-const schema = {
+const schema: JSONSchemaType<IFormInput> = {
   type: "object",
   properties: {
     firstName: {
