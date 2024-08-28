@@ -18,7 +18,7 @@ const schema: JSONSchemaType<IFormInput> = {
       errorMessage: {
         type: "First name must be a string.",
         maxLength: "First name cannot exceed 20 characters.",
-        minLength: 'First name is required.',
+        minLength: "First name is required.",
       },
     },
     lastName: {
@@ -50,7 +50,7 @@ const schema: JSONSchemaType<IFormInput> = {
         type: "Email address is required.",
         pattern: "Email address must be a valid format.",
       },
-    }
+    },
   },
   required: ["firstName", "lastName", "age", "email"],
   additionalProperties: false,
@@ -63,13 +63,17 @@ interface IFormInput {
   email: string;
 }
 
-export default function App() {
+interface AppProps {
+  firstName: string;
+}
+
+export default function App({ firstName }: AppProps) {
   const initialFormState = {
-    firstName: undefined,
+    firstName,
     lastName: undefined,
     age: undefined,
     email: undefined,
-  } 
+  };
 
   const {
     register,
@@ -78,25 +82,40 @@ export default function App() {
   } = useForm<IFormInput>({
     defaultValues: initialFormState,
     resolver: ajvResolver(schema),
+    mode: "onChange",
   });
 
   const onSubmit: SubmitHandler<IFormInput> = (data) => console.log(data);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <label htmlFor='firstName'>First Name</label>
-      <input id='firstName' aria-invalid={errors.firstName ? "true" : "false"} {...register("firstName")} />
-      {errors.firstName && (<p>{errors.firstName.message}</p>)}
-      <label htmlFor= 'lastName'>Last Name</label>
-      <input id='lastName' {...register("lastName")} />
+      <label htmlFor="firstName">First Name</label>
+      <input
+        id="firstName"
+        aria-invalid={errors.firstName ? "true" : "false"}
+        {...register("firstName")}
+      />
+      {errors.firstName && <p>{errors.firstName.message}</p>}
+      <label htmlFor="lastName">Last Name</label>
+      <input id="lastName" {...register("lastName")} />
       {errors.lastName && <p>{errors.lastName.message}</p>}
-      <label htmlFor='age'>Age</label>
-      <input id='age' type="number" aria-invalid={errors.firstName ? "true" : "false"} {...register("age", { valueAsNumber: true })} />
+      <label htmlFor="age">Age</label>
+      <input
+        id="age"
+        type="number"
+        aria-invalid={errors.firstName ? "true" : "false"}
+        {...register("age", { valueAsNumber: true })}
+      />
       {errors.age && <p>{errors.age.message}</p>}
-      <label htmlFor='email'>Email Address</label>
-      <input id='email' type="text" aria-invalid={errors.email ? "true" : "false"} {...register('email') }/>
+      <label htmlFor="email">Email Address</label>
+      <input
+        id="email"
+        type="text"
+        aria-invalid={errors.email ? "true" : "false"}
+        {...register("email")}
+      />
       {errors.email && <p>{errors.email.message}</p>}
-     <input type="submit" />
+      <input type="submit" />
     </form>
   );
 }
